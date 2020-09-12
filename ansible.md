@@ -11,8 +11,8 @@ Ansible is a simple to use and secure automation tool for managing from a few to
 
 ## Basics
 
-[Ansible documention](https://docs.ansible.com/ansible/latest/index.html)
-[How to Use Ansible: A Reference Guide](https://www.digitalocean.com/community/cheatsheets/how-to-use-ansible-cheat-sheet-guide)
+* [Ansible documention](https://docs.ansible.com/ansible/latest/index.html)
+* [How to Use Ansible: A Reference Guide](https://www.digitalocean.com/community/cheatsheets/how-to-use-ansible-cheat-sheet-guide)
 
 ## Basic commands
 
