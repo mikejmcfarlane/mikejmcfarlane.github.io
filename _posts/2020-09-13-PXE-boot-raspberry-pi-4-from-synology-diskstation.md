@@ -22,7 +22,7 @@ The following resources were useful, the first one in particular:
 
 ### bootloader config
 
-The raspberry pi bootloader is an key part of PXE booting, the config options are worth understanding.
+The raspberry pi bootloader is a key part of PXE booting, the config options are worth understanding.
 
 * [https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711_bootloader_config.md](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711_bootloader_config.md)
 
@@ -33,3 +33,7 @@ The first step is to configure the Synology to act as a DHCP server and to serve
 ### Setup manual IP
 
 ![Control Panel]({{ site.url }}/assets/ControlPanel.png)
+
+```bash
+test
+```
