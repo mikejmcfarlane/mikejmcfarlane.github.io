@@ -20,13 +20,25 @@ a:hover {
     text-decoration: underline;
 }
 h1 {
-    font-size: 3em;
+    font-size: 1.5em;
+    font-family:'Helvetica', 'Arial', 'Sans-Serif';
+}
+h2 {
+    font-size: 1.25em;
+    font-family:'Helvetica', 'Arial', 'Sans-Serif';
+}
+h3 {
+    font-size: 1.0em;
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
 }
 p {
-    font-size: 1.5em;
+    font-size: 1.1em;
     line-height: 1.4em;
-    color: #333;
+    padding-left: 20px;
+}
+ul, ol {
+    font-size: 1.1em;
+    line-height: 1.4em;
 }
 footer {
     border-top: 1px solid #d5d5d5;
@@ -40,4 +52,32 @@ ul.posts {
 
 ul.posts li {
     list-style: none;
+}
+
+pre,  
+code {
+    font-family: "Menlo", "Inconsolata", "Consolas", "Roboto Mono", "Ubuntu Mono", "Liberation Mono", "Courier New", monospace;;
+    font-size: 0.9375em;
+    color: #d5d5d5;
+    background-color: #292424;
+}
+
+code {
+    padding: 1px 5px;
+}
+  
+pre {
+    padding: 8px 12px;
+    overflow-x: auto;
+
+    > code {
+        border: 0;
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+img {
+    max-width: 90%;
+    vertical-align: middle;
 }

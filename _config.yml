@@ -1,2 +1,4 @@
 name: Mike McFarlane - robots, lego, raspberry pi
-markdown: github
+markdown: kramdown
+
+permalink: /blog/:year/:month/:day/:title
