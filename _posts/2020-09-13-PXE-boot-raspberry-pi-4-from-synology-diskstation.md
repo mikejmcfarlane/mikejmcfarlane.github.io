@@ -33,7 +33,7 @@ date: 2020-09-12
 
 ## Introduction
 
-PXE booting allow a server, in this case a Raspberry Pi 4, to boot from a remote computer, in this case a Synology Diskstation DS720+. I also did the same process with an older Synology Diskstation DS212+.
+PXE booting allows a server, in this case a Raspberry Pi 4, to boot from a remote computer, in this case a Synology Diskstation DS720+. I also did the same process with an older Synology Diskstation DS212+.
 
 Why might you do this? There are some reasons I like:
 
