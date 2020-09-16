@@ -1,5 +1,10 @@
 # GitHub Pages and Jekyll
 
+- [GitHub Pages and Jekyll](#github-pages-and-jekyll)
+  - [Getting started](#getting-started)
+  - [Running it locally](#running-it-locally)
+  - [SEO](#seo)
+
 ## Getting started
 
 * [Creating and Hosting a Personal Site on GitHub](http://jmcglone.com/guides/github-pages/)
@@ -16,3 +21,7 @@ docker run --rm --volume="$PWD:/srv/jekyll" -it -p 4000:4000 jekyll/jekyll:$JEKY
 ```
 
 * [Then published to localhost](http://localhost:4000)
+
+## SEO
+
+[Verify site and submit sitemap.xml](https://search.google.com/search-console/)
