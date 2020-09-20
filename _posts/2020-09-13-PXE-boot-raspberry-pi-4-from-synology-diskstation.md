@@ -52,13 +52,13 @@ The first step is to configure the Synology to act as a DHCP server and to confi
 
 ### Setup manual IP for the Synology
 
-![manual_ip]({{ site.url }}/assets/manual_ip.png)
+![manual_ip]({{ site.url }}/assets/pxe/manual_ip.png)
 
-![manual_ip_setup]({{ site.url }}/assets/manual_ip_setup.png)
+![manual_ip_setup]({{ site.url }}/assets/pxe/manual_ip_setup.png)
 
 ### Enable NFS
 
-![enable_nfs]({{ site.url }}/assets/enable_nfs.png)
+![enable_nfs]({{ site.url }}/assets/pxe/enable_nfs.png)
 
 ### Create shared folders and share them via NFS
 
@@ -67,29 +67,29 @@ Create two shared folders:
 * rpi-pxe (used for the OS files)
 * rpi-tftpboot (used for the boot files)
 
-![shared_folders]({{ site.url }}/assets/shared_folders.png)
+![shared_folders]({{ site.url }}/assets/pxe/shared_folders.png)
 
 And then for each folder edit the NFS permissions:
 
-![shared_folder_nfs_permissions_edit_rpi-pxe]({{ site.url }}/assets/shared_folder_nfs_permissions_edit_rpi-pxe.png)
+![shared_folder_nfs_permissions_edit_rpi-pxe]({{ site.url }}/assets/pxe/shared_folder_nfs_permissions_edit_rpi-pxe.png)
 
-![shared_folder_nfs_permissions_edit_rpi-tftpboot]({{ site.url }}/assets/shared_folder_nfs_permissions_edit_rpi-tftpboot.png)
+![shared_folder_nfs_permissions_edit_rpi-tftpboot]({{ site.url }}/assets/pxe/shared_folder_nfs_permissions_edit_rpi-tftpboot.png)
 
 ### Enable the TFTP service
 
-![tftp]({{ site.url }}/assets/tftp.png)
+![tftp]({{ site.url }}/assets/pxe/tftp.png)
 
 ### Setup DHCP
 
-![dhcp_network]({{ site.url }}/assets/dhcp_network.png)
+![dhcp_network]({{ site.url }}/assets/pxe/dhcp_network.png)
 
-![dhcp_edit]({{ site.url }}/assets/dhcp_edit.png)
+![dhcp_edit]({{ site.url }}/assets/pxe/dhcp_edit.png)
 
-![dhcp_subnet]({{ site.url }}/assets/dhcp_subnet.png)
+![dhcp_subnet]({{ site.url }}/assets/pxe/dhcp_subnet.png)
 
 ### Set the DHCP vendor setting
 
-![dhcp_vendor_setting]({{ site.url }}/assets/dhcp_vendor_setting.png)
+![dhcp_vendor_setting]({{ site.url }}/assets/pxe/dhcp_vendor_setting.png)
 
 ### Not quite finished with the Synology!
 
@@ -241,7 +241,7 @@ sudo cp -r /boot/* /nfs/rpi-tftpboot/
 ```
 then in the Synology console enable PXE boot and point it at the bootloader:
 
-![dhcp_pxe_setting]({{ site.url }}/assets/dhcp_pxe_setting.png)
+![dhcp_pxe_setting]({{ site.url }}/assets/pxe/dhcp_pxe_setting.png)
 
 ## And PXE boot
 
@@ -296,7 +296,7 @@ time dd if=~/tmp/test1.img of=/dev/null bs=4k
 
 Just to reiterate these are relative comparisons of storage read and write speeds for various Raspberry Pi options. I'm pleased with the multiple client PXE boot compared to microSD.
 
-![RaspberryPi_storage_performance_comparison]({{ site.url }}/assets/RaspberryPi_storage_performance_comparison.png)
+![RaspberryPi_storage_performance_comparison]({{ site.url }}/assets/pxe/RaspberryPi_storage_performance_comparison.png)
 
 A single client PXE booted is faster than the high performance Sandisk card, and multiple clients compare favorably to the microSD card option. Given the test with multiple clients involved simultaneous intensive read/write tests I might expect real world performance to be faster than microSD card. Whilst getting the option of easier backups and automation and better long term reliability.
 

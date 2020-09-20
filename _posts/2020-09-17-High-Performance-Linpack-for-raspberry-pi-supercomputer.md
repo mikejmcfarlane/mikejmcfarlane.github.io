@@ -20,6 +20,9 @@ date: 2020-09-17
   - [Test 1:  Vary P and Q, for both PXE boot and microSD card storage.](#test-1-vary-p-and-q-for-both-pxe-boot-and-microsd-card-storage)
   - [Test 2: Vary block size, using microSD storage as it was slightly faster in Test 1.](#test-2-vary-block-size-using-microsd-storage-as-it-was-slightly-faster-in-test-1)
 - [Test results](#test-results)
+  - [Test 1](#test-1)
+  - [Test 2](#test-2)
+- [Conclusion](#conclusion)
 - [Next steps](#next-steps)
 - [Useful resources](#useful-resources)
 - [Some useful commands](#some-useful-commands)
@@ -40,7 +43,7 @@ For my simple cluster all I needed was more than one Pi, a fast network switch a
 
 Various Pi storage options (microSD and PXE boot) for the OS, see results below.
 
-![RaspberryPi_4_with_GeeekPi_ICE_Tower_Cooler]({{ site.url }}/assets/RaspberryPi_4_with_GeeekPi_ICE_Tower_Cooler.jpeg)
+![RaspberryPi_4_with_GeeekPi_ICE_Tower_Cooler]({{ site.url }}/assets/linpack/RaspberryPi_4_with_GeeekPi_ICE_Tower_Cooler.jpeg)
 
 The Pi were connected to the switch in a hub and spoke pattern.
 
@@ -344,7 +347,7 @@ HPL.out      output file name (if any)
 ```
 will run 12 tests, one for each NB value.
 
-I empirically established the maximum problem size I could run given the 4GB memory Pi was _32768_ which used about 80% memory on the 4GB node, and much less on the two 8GB nodes.
+I empirically established the maximum problem size I could run given the 4GB memory Pi was _32768_ which used about 80% memory on the 4GB node, and much less on the two 8GB nodes. I did experiment with dropping the core on the 4GB Pi to 2 so I could increase the problem size (45000) and hence the memory utilisation to be 80% across all nodes, but this resulted in 28.75 Gflops, so well below typical result of 30 Gflops. More CPUs is best.
 
 The final test matrices were:
 
@@ -358,16 +361,28 @@ Q      :       4        3        6        2       12        1        3
 ### Test 2: Vary block size, using microSD storage as it was slightly faster in Test 1.
 
 ```
-NB     :       8       16       32       64       96      128      160      192     224      256      288      320
+NB:   8   16   32   64   96   128   160   192   224   256   288   320
 ```
 
 ## Test results
 
-blah
+### Test 1
+
+![Compare P and Q with PXE boot]({{ site.url }}/assets/linpack/P_Q_pxe.png)
+
+![Compare P and Q with microSD boot]({{ site.url }}/assets/linpack/P_Q_microsd.png)
+
+### Test 2
+
+![Varying block size with optimal PQ and microSD]({{ site.url }}/assets/linpack/block_size.png)
+
+## Conclusion
+
+3 Raspberry Pi 4's were built in to a cluster and tested with High Performance Linpack. A range of variables were explored and optimised. Within the limits of my setup with only a small number of nodes, once reasonable values of P, Q and NB were established further optimisation of them yielded minimal gains. The biggest factor is the number and speed of CPUs, and the amount of memory! Which is about what I expected given the test type. Peak performance for my 3 node cluster was 31.322 Gflops.
 
 ## Next steps
 
-I'm pretty happy with what I have done here. I might automate the build so as I add more nodes it will be easier to setup. And it would be good to figure out what is going on with overclocking and OpenBLAS, to see if I can squeeze some more performance out the cluster. The overclocking issue is particularly bugging me, so will def come back to that!
+I'm pretty happy with what I have done here. I might automate the build so as I add more nodes it will be easier to setup. And it would be good to figure out what is going on with overclocking and OpenBLAS, to see if I can squeeze some more performance out the cluster. The overclocking issue is particularly bugging me, so will def come back to that! I might add some new nodes too.
 
 ## Useful resources
 
