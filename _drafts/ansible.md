@@ -17,10 +17,14 @@ Ansible is a simple to use and secure automation tool for managing from a few to
 ## Basic commands
 
 ```bash
-ansible -i hosts all -u pi -m ping
+ansible -i hosts all -u pi -m ping --ask-pass
 ```
 
 ```bash
 ansible -i hosts all -u pi -a "sudo apt update"
 ansible -i hosts all -u pi -a "sudo apt -y full-upgrade"
+```
+
+```bash
+ansible-galaxy init <my role>
 ```
