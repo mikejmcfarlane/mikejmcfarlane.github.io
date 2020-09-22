@@ -13,17 +13,24 @@ Ansible is a simple to use and secure automation tool for managing from a few to
 
 * [Ansible documention](https://docs.ansible.com/ansible/latest/index.html)
 * [How to Use Ansible: A Reference Guide](https://www.digitalocean.com/community/cheatsheets/how-to-use-ansible-cheat-sheet-guide)
+* [Ansilbe modules - all](https://docs.ansible.com/ansible/latest/modules/list_of_all_modules.html)
 
 ## Basic commands
+
+Ping all nodes, if password ssh access:
 
 ```bash
 ansible -i hosts all -u pi -m ping --ask-pass
 ```
 
+Ad-hoc commands
+
 ```bash
 ansible -i hosts all -u pi -a "sudo apt update"
 ansible -i hosts all -u pi -a "sudo apt -y full-upgrade"
 ```
+
+Create a new role:
 
 ```bash
 ansible-galaxy init <my role>

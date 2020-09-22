@@ -2,7 +2,9 @@
 layout: default
 title: Mike McFarlane - robots, lego, raspberry pi
 ---
-<div class="blurb">
-	<h1>Hi there, I'm Mike McFarlane!</h1>
-	<p>This is my tech musings on robots, lego mindstorms, raspberry pi and other tech. <a href="/about">Read more about other bits of my life...</a></p>
-</div><!-- /.blurb -->
+	<ul class="posts">
+
+	  {% for post in site.posts %}
+	    <p><li><span>{{ post.date | date_to_string }}</span> » <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li></p>
+	  {% endfor %}
+	</ul>
