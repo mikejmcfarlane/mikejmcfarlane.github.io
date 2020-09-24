@@ -69,7 +69,7 @@ cd ~/tmp
 wget https://www.mpich.org/static/downloads/3.4a3/mpich-3.4a3.tar.gz
 tar xzvf mpich-3.4a3.tar.gz
 cd mpich-3.4a3
-./configure
+./configure --with-device=ch3:sock
 make -j 4
 sudo make install
 ```
