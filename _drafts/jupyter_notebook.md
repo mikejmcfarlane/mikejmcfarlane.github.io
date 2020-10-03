@@ -67,7 +67,13 @@ Configure jupyter:
 jupyter notebook --generate-config
 vi ~/.jupyter/jupyter_notebook_config.py
 c.NotebookApp.allow_remote_access = True
-jupyter notebook password
+c.NotebookApp.password = '<HASHED PASSWORD>'
+```
+Plenty ways to generate the above hashed password eg:
+
+```bash
+python3
+from notebook.auth import passwd; passwd()
 ```
 
 Configure nginx:
@@ -123,27 +129,29 @@ Configure jupyter as a service:
 
 ```bash
 sudo vi /etc/init/jupyter.conf
+sudo vi /etc/systemd/system/jupyter.service
 ```
 
-Containing:
+```bash
+[Unit] 
+Description=Jupyter Service 
+After=multi-user.target
+
+[Service] 
+User=pi
+ExecStart=/home/pi/.local/bin/jupyter notebook --no-browser --NotebookApp.allow_origin='*' --notebook-dir='/home/pi/repos' --config=/home/pi/.jupyter/jupyter_notebook_config.py  
+Restart=on-failure
+
+[Install] 
+WantedBy=multi-user.target
+```
+
+Then run the Jupyter service:
 
 ```bash
-description "Service for jupyter notebook"
-author      "Mike McFarlane"
-
-start on filesystem or runlevel [2345]
-stop on shutdown
-respawn
-
-script
-    echo $$ > /var/run/jupyter.pid
-    exec /home/pi/.local/bin/jupyter notebook --no-browser 
-    --NotebookApp.allow_origin='*' --notebook-dir='/home/pi/repos'
-
-end script
-
-pre-stop script
-    rm /var/run/jupyter.pid
-end script
+sudo systemctl daemon-reload
+sudo systemctl start jupyter
+sudo systemctl status jupyter
+sudo systemctl enable jupyter
 ```
 
