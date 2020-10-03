@@ -51,8 +51,9 @@ docker run -v /Users/mikemcfarlane/Dropbox/jupyter_notebook:/home/jovyan/work -p
 Install stuff:
 
 ```bash
-sudo apt install python3-pip nginx
-python3 -m pip install jupyter matplotlib scipy numpy
+sudo apt install python3-pip nginx libatlas-base-dev python3-matplotlib python3-numpy python3-scipy python3-pandas libopenjp2-7
+sudo apt autoremove
+python3 -m pip install jupyter
 ```
 
 Add to PATH:
