@@ -11,11 +11,9 @@ date: 2020-10-18
   - [Some points for thought found with the automation](#some-points-for-thought-found-with-the-automation)
 - [Testing](#testing)
   - [Testing BLAS versions](#testing-BLAS-versions)
-  - [Testing problem size in relation to memory size](#testing-problem-size-in-relation-to-memory-size)
-  - [Testing with overclocking](#testing-with-overclocking)
+  - [Testing problem size in relation to memory size and clock speed](#testing-problem-size-in-relation-to-memory-size-and-clock-speed)
 - [Power usage](#power-usage)
-
-
+- [Conclusions](#conclusions)
 
 # Introduction
 
@@ -37,6 +35,11 @@ If you are new to Ansible here are a couple of good guides to Ansible to help yo
 
 The automation is still a work in progress. Whilst it works reliably on my cluster and Ansible node, I've not put much effort in to making it generic. Also, as there are quite a lot of different configurations, I haven't made this a single line with arguments approach, so there are a few lines required to do most tasks e.g. setup a new node, configure and build HPL, or wipe an existing one. Also there is some reliance on an NFS mount (from a Synology Diskstation).
 
+Control of the various playbooks is mostly using:
+
+- [Ansible tags](https://docs.ansible.com/ansible/latest/user_guide/playbooks_tags.html)
+- [Ansible group vars file](https://github.com/mikejmcfarlane/ansible_pi/blob/master/group_vars/all.yml)
+
 Here is my [ansible_pi repo](https://github.com/mikejmcfarlane/ansible_pi). The [readme](https://github.com/mikejmcfarlane/ansible_pi/blob/master/README.md) covers most options and how to run them.
 
 Broadly the instructions and Ansible playbooks cover:
@@ -46,10 +49,7 @@ Broadly the instructions and Ansible playbooks cover:
 - Setting up PXE boot. Check out my [previous blog post on setting up PXE boot on a Synology Diskstation](https://mikejmcfarlane.github.io/blog/2020/09/12/PXE-boot-raspberry-pi-4-from-synology-diskstation).
 - Setting up, building and running High Performance Linpack on a Pi cluster. This includes discrete tasks for various BLAS libraries including building OpenBLAS and ATLAS. The ATLAS build is about 8 hours in a Pi, so I built it once and stuck the libraries on an NFS mount. More about [building ATLAS on another blog post](https://mikejmcfarlane.github.io/blog/2020/09/17/High-Performance-Linpack-for-raspberry-pi-supercomputer).
 
-Control of the various playbooks is mostly using:
-
-- [Ansible tags](https://docs.ansible.com/ansible/latest/user_guide/playbooks_tags.html)
-- [Ansible group vars file](https://github.com/mikejmcfarlane/ansible_pi/blob/master/group_vars/all.yml)
+There is also a [Jupyter notebook](https://github.com/mikejmcfarlane/pi_notebooks) that apart from all the graphs and data has some useful tools for setting up HPL runs e.g. suggesting suitable values for N and NB based on the cluster size and amount of memory per node.
 
 ## Some points for thought found with the automation
 
@@ -68,19 +68,19 @@ I had planned to test quite a number of factors including the effect of PXE boot
 Reading up on Pi clusters indicated a variety of BLAS libraries in use, so this seemed like a good place to start. The options explored were ATLAS from the Raspbian repo, build ATLAS from source and build OpenBLAS from source.
 
 
-## Testing problem size in relation to memory size
+## Testing problem size in relation to memory size and clock speed
 
-Increasing the memory size allows a larger problem size to be loaded, but what is the actual effect of that. In particular, is it worth buying the 8GB memory Pi compared to the 4GB memory model?
+Increasing the memory size allows a larger problem size to be loaded, but what is the actual effect of that. In particular, is it worth buying the 8GB memory Pi compared to the 4GB memory model? Lastly, what is the effect of overclocking?
 
-
-## Testing with overclocking
-
-Lastly, what is the effect of overclocking?
-
+![Is more memory worth it in a Pi HPL cluster?]({{ site.url }}/assets/ansible_hpl/Is_more_memory_worth_it.png)
 
 # Power usage
 
-I used the power meter on my APC UPS to measure the power drawn by the Pi cluster under load.
+I used the power meter on my APC UPS to measure the approximate power drawn by the Pi cluster under various conditions. Base power covers the networking and file server with no Pis booted. Subsequent values show as before with the cluster booted (but not overclocked) with no load and HPL load.
+
+![Approximate power usage in a Pi HPL cluster?]({{ site.url }}/assets/ansible_hpl/pi_cluster_power_usage.png)
+
+# Conclusions
 
 
 
