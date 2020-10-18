@@ -82,6 +82,12 @@ I used the power meter on my APC UPS to measure the approximate power drawn by t
 
 # Conclusions
 
+Automation can be a tricky thing to get right and make consistent, and definitely so in high performance computing or production environments. My starting point for the automation testing was to test against a baseline created from the manually built 3 node cluster. Straightaway this highlighted an issue, that took days to debug and was due to the order of IP addresses in the node file. Multiple rebuilds of the various configurations were required to get all automation flows even working, and then I found that a baseline created against the 4 node cluster was not performing consistently. For a work project I would need to figure out the issues (or live with them dependent on the impact) but after a week or so of personal time I decided to move on to other projects with a consistent but sub optimal performance cluster. Another day, and as the automation is working I can easily get back to where I left off.
+Anecdotally I had felt that the built from source code version of ATLAS outperformed OpenBLAS and the repo ATLAS, but the final testing with the sub optimal cluster did not definitively demonstrate this. I suspect that an OS library used to build ATLAS may be the performance issue.
+It is also clear that the 8GB Pi model does give a speed advantage over the 4GB model, but only 35% better, not double, so if you just want to experiment with clusters the 4GB model is more than sufficient. Similarly, overclocking from 1.5GHz to 2.0GHz gave a 20% increase in Gflops. Easy to do and free in terms of capital costs, but not energy. Perhaps in a large production cluster you would do software configuration of the system to tune the required performance against operating costs.
+It's been a while since I used Ansible and have enjoyed re-learning it. It's a powerful tool and very useful in many use cases. I don't think I will add any more Pi nodes to my cluster, but it's been productive to automate that.
+There is an NVIDIA Jetson node I would like to add, but that's another post!
 
+ 
 
 
