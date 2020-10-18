@@ -57,20 +57,31 @@ Control of the various playbooks is mostly using:
 - PXE boot - In the previous post I found that a 3 node cluster was reasonably performant relative to microSD, but for this 4 node cluster I started to find a larger load average for each node and a resulting significant drop in performance. I didn't fully bottom this out, and discovered some other performance issues (more below), so need to follow this up as don't think the PXE boot should have been that much slower.
 - SD card failure - during testing one of my Sandisk Extreme microSD cards failed. It wasn't that old, and I haven't done a huge amount of testing with it, and once the HPL tests are running there is little disk activity, so should have been no problems. Maybe I just got a bad card.
 - MPI channels - Message Passing Interface has a new faster communication protocol called channel 4. I noticed some issues with this protocol so dropped back to channel 3 with the Nemesis protocol. This needs further investigation. You can re-configure the automation to build with channel 4 in the Ansible group vars file.
-- build not performance repeatable - in addition to the other performance issues I also experienced a significant performance drop from some other factor. At one point I was hitting 4.62Gflops, but then inexplicably after a rebuild the performance dropped to around 4.22Gflops. I've not been able to resolve this despite completely rebuilding the cluster. I suspect perhaps an OS or library upgrade in `apt get upgrade` step in the automation may have changed something I wasn't aware. Spent quite a bit of time on this, and it's just time to get a blog post out, so one for another day or a better brain!
+- build not performance repeatable - in addition to the other performance issues I also experienced a significant performance drop from some other factor. At one point I was hitting 4.62Gflops, but then inexplicably after a rebuild the performance dropped to around 4.22Gflops. I've not been able to resolve this despite completely rebuilding the cluster. I suspect perhaps an OS or library upgrade in `apt get upgrade` step, or how that interacts with built ATLAS which seems the most affected, in the automation may have changed something I wasn't aware of. Spent quite a bit of time on this, and it's just time to get a blog post out, so one for another day or a better brain!
 
 # Testing
 
+I had planned to test quite a number of factors including the effect of PXE boot with link aggregation on the Synology Diskstation, and the effects of the different MPI channel protocols, but have spent too long debugging the automation, and I'm keen to be moving on to explore docker clusters, so am just presenting the results of the code tests that I wanted to run.
+
 ## Testing BLAS versions
+
+Reading up on Pi clusters indicated a variety of BLAS libraries in use, so this seemed like a good place to start. The options explored were ATLAS from the Raspbian repo, build ATLAS from source and build OpenBLAS from source.
 
 
 ## Testing problem size in relation to memory size
 
+Increasing the memory size allows a larger problem size to be loaded, but what is the actual effect of that. In particular, is it worth buying the 8GB memory Pi compared to the 4GB memory model?
+
 
 ## Testing with overclocking
 
+Lastly, what is the effect of overclocking?
 
 
 # Power usage
+
+I used the power meter on my APC UPS to measure the power drawn by the Pi cluster under load.
+
+
 
 
