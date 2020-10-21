@@ -1,7 +1,7 @@
 ---
 layout: post
 title: High Performance Linpack Ansible automation for the Raspberry Pi 4
-date: 2020-10-18
+date: 2020-10-21
 ---
 
 - [Introduction](#introduction)
@@ -18,7 +18,7 @@ date: 2020-10-18
 # Introduction
 
 I recently added a fourth node to my High Performance Linpack (HPL) Raspberry Pi 4 cluster. Building 3 nodes by hand was getting a little boring, and likely to cause mistakes and inconsistencies between nodes. So time for a little automation.
-In this post I will give an overview of the automation, so problems that I encountered particularly in regards to cluster performance, and report on some test results with the new 4 node cluster.
+In this post I will give an overview of the automation, some problems that I encountered particularly in regards to cluster performance, and report on some test results with the new 4 node cluster.
 
 # Ansible automation to build HPL
 
@@ -53,30 +53,38 @@ There is also a [Jupyter notebook](https://github.com/mikejmcfarlane/pi_notebook
 
 ## Some points for thought found with the automation
 
-- nodes file - I found out that the order of the IP addresses in the `nodes-Xpi` file matters to performance. In an early version of the automation a loop in the code put the IP addresses as groups like `1.1.1.1, 2.2.2.2, 3.3.3.3,1.1.1.1, 2.2.2.2, 3.3.3.3` but for optimum performance they need to be grouped like `1.1.1.1, 1.1.1.1, 2.2.2.2, 2.2.2.2, 3.3.3.3, 3.3.3.3`.
-- PXE boot - In the previous post I found that a 3 node cluster was reasonably performant relative to microSD, but for this 4 node cluster I started to find a larger load average for each node and a resulting significant drop in performance. I didn't fully bottom this out, and discovered some other performance issues (more below), so need to follow this up as don't think the PXE boot should have been that much slower.
-- SD card failure - during testing one of my Sandisk Extreme microSD cards failed. It wasn't that old, and I haven't done a huge amount of testing with it, and once the HPL tests are running there is little disk activity, so should have been no problems. Maybe I just got a bad card.
-- MPI channels - Message Passing Interface has a new faster communication protocol called channel 4. I noticed some issues with this protocol so dropped back to channel 3 with the Nemesis protocol. This needs further investigation. You can re-configure the automation to build with channel 4 in the Ansible group vars file.
+- nodes file - I found out that the order of the IP addresses in the `nodes-Xpi` file matters to performance. In an early version of the automation a loop in the code put the IP addresses as groups like `1.1.1.1, 2.2.2.2, 3.3.3.3, 1.1.1.1, 2.2.2.2, 3.3.3.3` but for optimum performance they need to be grouped like `1.1.1.1, 1.1.1.1, 2.2.2.2, 2.2.2.2, 3.3.3.3, 3.3.3.3`.
+- PXE boot - In the previous post I found that a 3 node cluster was reasonably performant relative to microSD, but for this 4 node cluster I started to find a larger load average for each node and a resulting significant drop in performance. I didn't fully bottom this out, and discovered some other performance issues (more below), so need to follow this up as don't think the PXE boot should have been that much slower. OpenBLAS also has a significantly higher load average for some reason, so work to do here.
+- SD card failure - during testing one of the Sandisk Extreme microSD cards failed. It wasn't that old, and I haven't done a huge amount of testing with it, and once the HPL tests are running there is little disk activity, so should have been no problems. Maybe I just got a bad card.
+- MPI channels - Message Passing Interface has a new [faster communication protocol called ch4](https://wiki.mpich.org/mpich/index.php/CH4_Overall_Design) with a range of options at build. I noticed some issues with this protocol so dropped back to [ch3](https://wiki.mpich.org/mpich/index.php/CH3_And_Channels) with the Nemesis protocol. This needs further investigation. You can re-configure the automation to build with channel 4 in the Ansible group vars file.
 - build not performance repeatable - in addition to the other performance issues I also experienced a significant performance drop from some other factor. At one point I was hitting 4.62Gflops, but then inexplicably after a rebuild the performance dropped to around 4.22Gflops. I've not been able to resolve this despite completely rebuilding the cluster. I suspect perhaps an OS or library upgrade in `apt get upgrade` step, or how that interacts with built ATLAS which seems the most affected, in the automation may have changed something I wasn't aware of. Spent quite a bit of time on this, and it's just time to get a blog post out, so one for another day or a better brain!
 
 # Testing
 
-I had planned to test quite a number of factors including the effect of PXE boot with link aggregation on the Synology Diskstation, and the effects of the different MPI channel protocols, but have spent too long debugging the automation, and I'm keen to be moving on to explore docker clusters, so am just presenting the results of the code tests that I wanted to run.
+I had planned to test quite a number of factors including the effect of PXE boot with link aggregation on the Synology Diskstation, and the effects of the different MPI channel protocols, but have spent too long debugging the automation, and I'm keen to be moving on to explore docker clusters, so am just presenting the results of the code tests so far.
 
 ## Testing BLAS versions
 
 Reading up on Pi clusters indicated a variety of BLAS libraries in use, so this seemed like a good place to start. The options explored were ATLAS from the Raspbian repo, build ATLAS from source and build OpenBLAS from source.
 
+One thing that occurred was differences in the load average for the nodes dependent on the BLAS lib in use: 
+
+- ATLAS built from source: 4
+- ATLAS from the Raspbian repo: 4
+- OpenBLAS: 15
+
+Given most processes are meant to run in memory, and watching actual disk activity (minimal) and swap(zero), there is something else to investigate here. As OpenBLAS has been used successfully for other clusters, might be something in my build.
+
 
 ## Testing problem size in relation to memory size and clock speed
 
-Increasing the memory size allows a larger problem size to be loaded, but what is the actual effect of that. In particular, is it worth buying the 8GB memory Pi compared to the 4GB memory model? Lastly, what is the effect of overclocking?
+Increasing the memory size allows a larger problem size to be loaded, but what is the actual effect of that? In particular, is it worth buying the 8GB memory Pi compared to the 4GB memory model? Lastly, what is the effect of overclocking?
 
 ![Is more memory worth it in a Pi HPL cluster?]({{ site.url }}/assets/ansible_hpl/Is_more_memory_worth_it.png)
 
 # Power usage
 
-I used the power meter on my APC UPS to measure the approximate power drawn by the Pi cluster under various conditions. Base power covers the networking and file server with no Pis booted. Subsequent values show as before with the cluster booted (but not overclocked) with no load and HPL load.
+I used the power meter on the APC UPS that the cluster is running from to measure the approximate power drawn by the Pi cluster under various conditions. Base power covers the networking and file server with no Pis booted. Subsequent values show as before with the cluster booted (but not overclocked) with no load and HPL load.
 
 ![Approximate power usage in a Pi HPL cluster?]({{ site.url }}/assets/ansible_hpl/pi_cluster_power_usage.png)
 
@@ -85,8 +93,8 @@ I used the power meter on my APC UPS to measure the approximate power drawn by t
 Automation can be a tricky thing to get right and make consistent, and definitely so in high performance computing or production environments. My starting point for the automation testing was to test against a baseline created from the manually built 3 node cluster. Straightaway this highlighted an issue, that took days to debug and was due to the order of IP addresses in the node file. Multiple rebuilds of the various configurations were required to get all automation flows even working, and then I found that a baseline created against the 4 node cluster was not performing consistently. For a work project I would need to figure out the issues (or live with them dependent on the impact) but after a week or so of personal time I decided to move on to other projects with a consistent but sub optimal performance cluster. Another day, and as the automation is working I can easily get back to where I left off.
 Anecdotally I had felt that the built from source code version of ATLAS outperformed OpenBLAS and the repo ATLAS, but the final testing with the sub optimal cluster did not definitively demonstrate this. I suspect that an OS library used to build ATLAS may be the performance issue.
 It is also clear that the 8GB Pi model does give a speed advantage over the 4GB model, but only 35% better, not double, so if you just want to experiment with clusters the 4GB model is more than sufficient. Similarly, overclocking from 1.5GHz to 2.0GHz gave a 20% increase in Gflops. Easy to do and free in terms of capital costs, but not energy. Perhaps in a large production cluster you would do software configuration of the system to tune the required performance against operating costs.
-It's been a while since I used Ansible and have enjoyed re-learning it. It's a powerful tool and very useful in many use cases. I don't think I will add any more Pi nodes to my cluster, but it's been productive to automate that.
-There is an NVIDIA Jetson node I would like to add, but that's another post!
+It's been a while since I used Ansible and I have enjoyed re-learning it. It's a powerful tool and very useful in many use cases. I don't think I will add any more Pi nodes to my cluster, but it's been productive to automate that.
+There is an NVIDIA Jetson node I would like to add, but that's another post! And some docker fun too.
 
  
 
