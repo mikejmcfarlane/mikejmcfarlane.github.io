@@ -21,6 +21,9 @@ date: 2020-10-21
 I recently added a fourth node to my High Performance Linpack (HPL) Raspberry Pi 4 cluster. Building 3 nodes by hand was getting a little boring, and likely to cause mistakes and inconsistencies between nodes. So time for a little automation.
 In this post I will give an overview of the automation, some problems that I encountered particularly in regards to cluster performance, and report on some test results with the new 4 node cluster.
 
+![My new 4 node RaspberryPi cluster]({{ site.url }}/assets/ansible_hpl/4_node_pi_cluster.jpg)
+
+
 # Ansible automation to build HPL
 
 ## Automation overview
