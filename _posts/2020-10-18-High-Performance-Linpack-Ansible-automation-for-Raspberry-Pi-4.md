@@ -10,10 +10,11 @@ date: 2020-10-21
   - [How to run the automation](#how-to-run-the-automation)
   - [Some points for thought found with the automation](#some-points-for-thought-found-with-the-automation)
 - [Testing](#testing)
-  - [Testing BLAS versions](#testing-BLAS-versions)
+  - [Testing BLAS versions](#testing-blas-versions)
   - [Testing problem size in relation to memory size and clock speed](#testing-problem-size-in-relation-to-memory-size-and-clock-speed)
 - [Power usage](#power-usage)
 - [Conclusions](#conclusions)
+- [Links to Pi automation](#links-to-pi-automation)
 
 # Introduction
 
@@ -73,8 +74,11 @@ One thing that occurred was differences in the load average for the nodes depend
 - ATLAS from the Raspbian repo: 4
 - OpenBLAS: 15
 
-Given most processes are meant to run in memory, and watching actual disk activity (minimal) and swap(zero), there is something else to investigate here. As OpenBLAS has been used successfully for other clusters, might be something in my build.
+Given most processes are meant to run in memory, and watching actual disk activity (minimal) and swap(zero), there is something else to investigate here. As OpenBLAS has been used [successfully for other clusters](https://www.epcc.ed.ac.uk/blog/2017/06/07/linpack-and-blas-wee-archie), might be something in my build.
 
+![Comparing BLAS libraries in a 4 node Pi cluster]({{ site.url }}/assets/ansible_hpl/Comparing_BLAS_libraries_in_Pi_cluster.png)
+
+But the results here are suspect due to the none repeatable performance issue discussed earlier. And can be seen in the Testing problem size section where the same build gave much faster results.
 
 ## Testing problem size in relation to memory size and clock speed
 
@@ -90,11 +94,23 @@ I used the power meter on the APC UPS that the cluster is running from to measur
 
 # Conclusions
 
-Automation can be a tricky thing to get right and make consistent, and definitely so in high performance computing or production environments. My starting point for the automation testing was to test against a baseline created from the manually built 3 node cluster. Straightaway this highlighted an issue, that took days to debug and was due to the order of IP addresses in the node file. Multiple rebuilds of the various configurations were required to get all automation flows even working, and then I found that a baseline created against the 4 node cluster was not performing consistently. For a work project I would need to figure out the issues (or live with them dependent on the impact) but after a week or so of personal time I decided to move on to other projects with a consistent but sub optimal performance cluster. Another day, and as the automation is working I can easily get back to where I left off.
+Automation can be a tricky thing to get right and make consistent, and definitely so in high performance computing or production environments. My starting point for the automation testing was to test against a baseline created from the manually built 3 node cluster. Straightaway this highlighted an issue, that took days to debug and was due to the order of IP addresses in the node file. Multiple rebuilds of the various configurations were required to get all automation flows even working, and then I found that a baseline created against the 4 node cluster was not performing consistently. For a work project I would need to figure out the issues (or live with them dependent on the impact) but after a week or so of personal time I decided to move on to other projects with an inconsistent and sub optimal performance cluster. Another day, and as the automation is working I can easily get back to where I left off to debug.
+
 Anecdotally I had felt that the built from source code version of ATLAS outperformed OpenBLAS and the repo ATLAS, but the final testing with the sub optimal cluster did not definitively demonstrate this. I suspect that an OS library used to build ATLAS may be the performance issue.
+
 It is also clear that the 8GB Pi model does give a speed advantage over the 4GB model, but only 35% better, not double, so if you just want to experiment with clusters the 4GB model is more than sufficient. Similarly, overclocking from 1.5GHz to 2.0GHz gave a 20% increase in Gflops. Easy to do and free in terms of capital costs, but not energy. Perhaps in a large production cluster you would do software configuration of the system to tune the required performance against operating costs.
+
 It's been a while since I used Ansible and I have enjoyed re-learning it. It's a powerful tool and very useful in many use cases. I don't think I will add any more Pi nodes to my cluster, but it's been productive to automate that.
+
 There is an NVIDIA Jetson node I would like to add, but that's another post! And some docker fun too.
+
+
+# Links to Pi automation
+
++ [ansible_pi automation repo](https://github.com/mikejmcfarlane/ansible_pi)
++ [readme with instructions](https://github.com/mikejmcfarlane/ansible_pi/blob/master/README.md)
++ [Jupyter notebook with results and tools](https://github.com/mikejmcfarlane/pi_notebooks)
+
 
  
 
