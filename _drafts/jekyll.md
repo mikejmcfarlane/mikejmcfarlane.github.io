@@ -57,7 +57,7 @@ sudo gem install jekyll
 sudo gem install bundler
 cd repos/mikejmcfarlane.github.io/
 bundle install
-bundle exec jekyll serve --host 192.168.1.151
+bundle exec jekyll serve --host 10.0.4.40
 ```
 
 ## SEO
