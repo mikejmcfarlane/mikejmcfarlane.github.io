@@ -136,3 +136,10 @@ helm uninstall mozzy -n mqtt
 kubectl delete namespace mqtt
 ```
 
+## mongodb
+
+### Resources
+
++ [github inc readme with install](https://github.com/mongodb/mongodb-enterprise-kubernetes.git)
++ [Introducing the MongoDB Enterprise Operator for Kubernetes](https://www.mongodb.com/blog/post/introducing-the-mongodb-enterprise-operator-for-kubernetes)
++ [Cloud Ops Manager inc 30day trial](https://cloud.mongodb.com/)
