@@ -179,7 +179,15 @@ sudo docker build -t jupy .
 Run jupyterlab (then broswe to IP:8888)
 
 ```bash
-docker run --name jupyterlab -d -e TZ=Europe/London -p 8888:8888 -v /appdata/jupyterlab:/home/pi/nvdli-data jupy:latest
+sudo docker run --name jupyterlab -d -e TZ=Europe/London -p 8888:8888 -v /home/pi/nvdli-data:/opt/app/data jupy:latest
+```
+
+Kill it when done
+
+```bash
+sudo docker ps
+sudo docker kill <hash>
+sudo docker rm $(sudo docker ps -a -q)
 ```
 
 Dockerfile
