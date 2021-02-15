@@ -1,5 +1,15 @@
 # nvidia jetson notes
 
+- [nvidia jetson notes](#nvidia-jetson-notes)
+  - [Boot from NVMe](#boot-from-nvme)
+  - [Jetson performance and power mode](#jetson-performance-and-power-mode)
+  - [Jetson benchmarks](#jetson-benchmarks)
+  - [learning](#learning)
+    - [Getting Started with AI on Jetson Nano on nvidia deep learning institute](#getting-started-with-ai-on-jetson-nano-on-nvidia-deep-learning-institute)
+    - [nvidia deep learning course containers](#nvidia-deep-learning-course-containers)
+    - [Your First Machine Learning Project in Python Step-By-Step](#your-first-machine-learning-project-in-python-step-by-step)
+    - [Jetbot](#jetbot)
+
 ## Boot from NVMe
 
 sudo diskutil partitionDisk /dev/disk4 1 GPT "Free Space" "%noformat%" 100%
@@ -36,12 +46,23 @@ Useful guide to how models will run: https://developer.nvidia.com/embedded/jetso
 
 ## learning
 
+### Getting Started with AI on Jetson Nano on nvidia deep learning institute
+
 [Getting Started with AI on Jetson Nano on nvidia deep learning institute](https://courses.nvidia.com/courses/course-v1:DLI+S-RX-02+V2/courseware/b2e02e999d9247eb8e33e893ca052206/9605d1c247064480820d5a6b52dcbfe5/?activate_block_id=block-v1%3ADLI%2BS-RX-02%2BV2%2Btype%40sequential%2Bblock%409605d1c247064480820d5a6b52dcbfe5)
 
 
 sudo docker run --runtime nvidia -it --rm --network host --volume ~/nvdli-data:/nvdli-nano/data --device /dev/video0 nvcr.io/nvidia/dli/dli-nano-ai:v2.0.1-r32.5.0
 
-
 ### nvidia deep learning course containers
 
 https://ngc.nvidia.com/catalog/containers/nvidia:dli:dli-nano-ai/tags
+
+### Your First Machine Learning Project in Python Step-By-Step
+
+[Your First Machine Learning Project in Python Step-By-Step](https://machinelearningmastery.com/machine-learning-in-python-step-by-step/)
+
+### Jetbot
+
+[jetbot.org](https://jetbot.org/v0.4.3/)
+[NVIDIA-AI-IOT/jetbot](https://github.com/NVIDIA-AI-IOT/jetbot)
+
